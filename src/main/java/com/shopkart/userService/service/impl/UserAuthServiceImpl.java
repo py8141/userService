@@ -51,7 +51,7 @@ public class UserAuthServiceImpl implements UserAuthService {
             e.printStackTrace();
             return false;
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
             return false;
         }
     }
