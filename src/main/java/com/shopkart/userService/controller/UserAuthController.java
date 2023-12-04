@@ -3,6 +3,7 @@ package com.shopkart.userService.controller;
 import com.shopkart.userService.dto.TokenResponse;
 import com.shopkart.userService.dto.UserAuthDto;
 import com.shopkart.userService.service.UserAuthService;
+import com.shopkart.userService.service.UserService;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,13 +18,17 @@ public class UserAuthController {
     @Autowired
     UserAuthService userAuthService;
 
+    @Autowired
+    UserService userService;
+
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody UserAuthDto userAuthDto) {
         String token = userAuthService.authorizeUser(userAuthDto.getUsername(), userAuthDto.getPassword());
+        String userId = userService.getUserIdFromUsername(userAuthDto.getUsername());
 //        System.out.println(token);
         if (token != null) {
-            TokenResponse tokenResponse = new TokenResponse(token);
+            TokenResponse tokenResponse = new TokenResponse(token,userId);
             return ResponseEntity.ok(tokenResponse);
         } else {
             String errorMessage = "Invalid username or password";
